@@ -13,11 +13,11 @@ const DnDCalendar = withDragAndDrop(Calendar);
 class App extends Component {
   state = {
     events: [
-      {
-        start: moment().toDate(),
-        end: moment().add(1, "days").toDate(),
-        title: "Some title",
-      },
+      // {
+      //   start: new Date(),
+      //   end: new Date(new Date().getTime() + 7000000),
+      //   title: "Comment this event on the code to replicate issue",
+      // },
     ],
   };
 
@@ -35,18 +35,31 @@ class App extends Component {
     console.log(data);
   };
 
+  onSelect = (data) => {
+    this.setState((state) => {
+      const ev = {
+        start: data.start,
+        end: data.end,
+        title: "Some title",
+      };
+      return { ...state, events: [...state.events, ev] };
+    });
+  }
+
   render() {
     return (
       <div className="App">
         <DnDCalendar
           defaultDate={moment().toDate()}
-          defaultView="month"
+          defaultView="week"
           events={this.state.events}
           localizer={localizer}
           onEventDrop={this.onEventDrop}
           onEventResize={this.onEventResize}
+          onSelectSlot={this.onSelect}
           resizable
           style={{ height: "100vh" }}
+          selectable={true}
         />
       </div>
     );
